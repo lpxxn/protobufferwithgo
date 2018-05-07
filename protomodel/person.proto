@@ -1,0 +1,14 @@
+syntax = "proto3";
+package model;
+
+
+import "phoneinfo.proto";
+
+
+message Person {
+    string name = 1;
+    int32 id = 2;  // Unique ID number for this person.
+    string email = 3;
+
+    repeated model.PhoneNumber phones = 4;
+}

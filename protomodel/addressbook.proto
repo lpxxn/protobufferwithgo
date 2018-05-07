@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package model;
+
+import "person.proto";
+
+
+message AddressBook {
+    repeated model.Person people = 1;
+}

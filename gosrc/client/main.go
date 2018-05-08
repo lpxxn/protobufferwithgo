@@ -17,7 +17,7 @@ func main() {
 
 
 
-	r, err := client.Post("http://localhost:8999/", "", bytes.NewBuffer(pby))
+	r, err := client.Post("http://localhost:8999/", "application/x-protobuf", bytes.NewBuffer(pby))
 	if err != nil {
 		fmt.Println(err)
 	}

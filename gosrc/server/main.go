@@ -6,6 +6,8 @@ import (
 	"github.com/golang/protobuf/proto"
 	"net/http"
 	"io/ioutil"
+
+	"github.com/golang/protobuf/jsonpb"
 )
 
 func main() {
@@ -29,6 +31,7 @@ func main() {
 	//proto.Unmarshal(by1, &addr2)
 	//fmt.Println(addr2)
 	http.HandleFunc("/", TestData)
+	http.HandleFunc("/jsondata", TestJsonData)
 
 	http.ListenAndServe(":8999", nil)
 }
@@ -40,6 +43,25 @@ func TestData(w http.ResponseWriter, r *http.Request) {
 	proto.Unmarshal(rby, p1)
 	addr1 := model.AddressBook{People: []*model.Person{p1}}
 	fmt.Println(addr1)
+	uby, err := proto.Marshal(&addr1)
+	if err != nil {
+		w.Write([]byte("error"))
+	} else {
+		w.Write(uby)
+	}
+}
+
+
+
+func TestJsonData(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("test json data api in")
+	//rby, _ := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
+	p1 := &model.Person{}
+
+	jsonpb.Unmarshal(r.Body, p1)
+	addr1 := model.AddressBook{People: []*model.Person{p1}}
+	fmt.Println("json entity", addr1)
 	uby, err := proto.Marshal(&addr1)
 	if err != nil {
 		w.Write([]byte("error"))
